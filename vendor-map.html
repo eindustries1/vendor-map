@@ -14,19 +14,16 @@
       pointer-events: auto !important;
     }
 
-    /* Force Google Maps to accept taps */
     .gm-style, .gm-style * {
       pointer-events: auto !important;
       touch-action: auto !important;
     }
 
-    /* Override Wix iframe overlay if injected */
     body * {
       pointer-events: auto !important;
     }
   </style>
 
-  <!-- Google Maps API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
 </head>
 
@@ -36,7 +33,6 @@
   <script>
     let map;
 
-    // Initialize map
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 18.15, lng: -65.45 },
@@ -46,19 +42,11 @@
         streetViewControl: false,
         mapTypeControl: false
       });
-
-      console.log("Map initialized");
     }
 
-    // Add vendor markers + info windows + directions button
     function addVendorMarkers(vendors = [], userLocation = null) {
-      console.log("Adding vendor markers:", vendors);
-
       vendors.forEach(v => {
-        if (typeof v.lat !== "number" || typeof v.lng !== "number") {
-          console.log("Skipping vendor with invalid coords:", v);
-          return;
-        }
+        if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
 
         const marker = new google.maps.Marker({
           position: { lat: v.lat, lng: v.lng },
@@ -66,28 +54,28 @@
           title: v.title || ""
         });
 
-        const infoHtml = `
-          <div style="max-width:220px;font-family:sans-serif;">
-            <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
-            <p style="margin:0 0 8px;font-size:13px;">${v.addressText || ""}</p>
-            <button class="dirBtn" 
-              style="padding:6px 10px;font-size:13px;cursor:pointer;">
-              Get Directions
-            </button>
-          </div>
+        // ⭐ Create a REAL DOM element for the InfoWindow
+        const container = document.createElement("div");
+        container.style.maxWidth = "220px";
+        container.style.fontFamily = "sans-serif";
+
+        container.innerHTML = `
+          <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
+          <p style="margin:0 0 8px;font-size:13px;">${v.addressText || ""}</p>
+          <button class="dirBtn" 
+            style="padding:6px 10px;font-size:13px;cursor:pointer;">
+            Get Directions
+          </button>
         `;
 
-        const infoWindow = new google.maps.InfoWindow({ content: infoHtml });
+        const infoWindow = new google.maps.InfoWindow({
+          content: container
+        });
 
         marker.addListener("click", () => {
-          console.log("Marker tapped:", v.title);
           infoWindow.open(map, marker);
 
           google.maps.event.addListenerOnce(infoWindow, "domready", () => {
-            console.log("InfoWindow DOM ready");
-
-            // ⭐ FIX: Query inside the InfoWindow DOM
-            const container = infoWindow.getContent();
             const btn = container.querySelector(".dirBtn");
 
             if (btn) {
@@ -99,30 +87,19 @@
                 const dest = `${v.lat},${v.lng}`;
 
                 const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`;
-                console.log("Opening directions:", url);
                 window.open(url, "_blank");
               };
-            } else {
-              console.log("Direction button NOT found");
             }
           });
         });
       });
     }
 
-    // Listen for Wix messages
     window.addEventListener("message", (event) => {
       const data = event.data;
       if (!data || data.type !== "initMap") return;
 
-      console.log("Message received from Wix:", data);
-
       addVendorMarkers(data.vendors || [], data.userLocation || null);
-    });
-
-    // Debug: detect if iframe receives taps at all
-    document.body.addEventListener("click", () => {
-      console.log("Iframe received a click");
     });
 
     window.onload = initMap;

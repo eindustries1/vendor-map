@@ -8,38 +8,112 @@
       padding: 0;
       width: 100%;
       height: 100%;
+      overflow: hidden;
+      touch-action: pan-x pan-y; /* one-finger pan */
     }
+    .gm-style img { max-width: none; }
   </style>
-
-  <!-- Your Google Maps API key -->
+  <!-- Load Google Maps JS API (replace YOUR_API_KEY) -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
 </head>
-
 <body>
   <div id="map"></div>
 
   <script>
-    function initMap() {
-      const center = { lat: 18.15, lng: -65.45 }; // Vieques center
+    let map;
+    let userMarker;
 
-      const map = new google.maps.Map(document.getElementById("map"), {
+    function initMap(vendors, userLocation) {
+      const center = vendors.length
+        ? { lat: vendors[0].lat || 18.15, lng: vendors[0].lng || -65.45 }
+        : { lat: 18.15, lng: -65.45 }; // default center (e.g., Vieques)
+
+      map = new google.maps.Map(document.getElementById("map"), {
         center,
         zoom: 12,
-        gestureHandling: "greedy",
+        gestureHandling: "greedy", // one-finger pan/zoom
         fullscreenControl: false,
         streetViewControl: false,
         mapTypeControl: false
       });
 
-      // Example marker
-      new google.maps.Marker({
-        position: center,
-        map,
-        title: "Vieques"
+      // User location (blue dot)
+      if (userLocation && userLocation.lat && userLocation.lng) {
+        userMarker = new google.maps.Marker({
+          position: userLocation,
+          map,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: "#4285F4",
+            fillOpacity: 1,
+            strokeColor: "#ffffff",
+            strokeWeight: 2
+          },
+          title: "You are here"
+        });
+      }
+
+      const bounds = new google.maps.LatLngBounds();
+      if (userLocation) bounds.extend(userLocation);
+
+      // Vendor markers
+      vendors.forEach(v => {
+        if (!v.lat || !v.lng) return;
+
+        const pos = { lat: v.lat, lng: v.lng };
+        const marker = new google.maps.Marker({
+          position: pos,
+          map,
+          title: v.title
+        });
+
+        bounds.extend(pos);
+
+        const infoHtml = `
+          <div style="max-width:220px;font-family:sans-serif;">
+            <h3 style="margin:0 0 4px;">${v.title || ""}</h3>
+            <p style="margin:0 0 6px;font-size:13px;">${v.description || ""}</p>
+            <p style="margin:0 0 8px;font-size:12px;color:#555;">${v.addressText || ""}</p>
+            <button id="dirBtn" style="padding:6px 10px;font-size:13px;cursor:pointer;">
+              Get Directions
+            </button>
+          </div>
+        `;
+
+        const infoWindow = new google.maps.InfoWindow({ content: infoHtml });
+
+        marker.addListener("click", () => {
+          infoWindow.open(map, marker);
+
+          // Attach click handler after the DOM is rendered
+          google.maps.event.addListenerOnce(infoWindow, "domready", () => {
+            const btn = document.getElementById("dirBtn");
+            if (btn) {
+              btn.onclick = () => {
+                const origin = userLocation
+                  ? `${userLocation.lat},${userLocation.lng}`
+                  : "Current+Location";
+                const dest = `${v.lat},${v.lng}`;
+                const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`;
+                window.open(url, "_blank");
+              };
+            }
+          });
+        });
       });
+
+      if (!bounds.isEmpty()) {
+        map.fitBounds(bounds);
+      }
     }
 
-    window.onload = initMap;
+    // Listen for messages from Wix page
+    window.addEventListener("message", (event) => {
+      const data = event.data;
+      if (!data || data.type !== "initMap") return;
+      initMap(data.vendors || [], data.userLocation || null);
+    });
   </script>
 </body>
 </html>

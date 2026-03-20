@@ -1,4 +1,26 @@
-<script>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    html, body, #map {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: pan-x pan-y; /* one-finger pan */
+    }
+    .gm-style img { max-width: none; }
+  </style>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
+</head>
+
+<body>
+  <div id="map"></div>
+
+ <script>
   let map;
 
   function initMap() {
@@ -37,3 +59,22 @@
 
   window.onload = initMap;
 </script>
+      // ⭐ STATIC TEST MARKERS
+      const vendors = [
+        { lat: 18.150, lng: -65.450, title: "Vendor A" },
+        { lat: 18.155, lng: -65.445, title: "Vendor B" }
+      ];
+
+      vendors.forEach(v => {
+        new google.maps.Marker({
+          position: { lat: v.lat, lng: v.lng },
+          map,
+          title: v.title
+        });
+      });
+    }
+
+    window.onload = initMap;
+  </script>
+</body>
+</html>

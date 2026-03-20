@@ -14,66 +14,58 @@
     .gm-style img { max-width: none; }
   </style>
 
+  <!-- Google Maps JS API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
 </head>
 
 <body>
   <div id="map"></div>
 
- <script>
-  let map;
+  <script>
+    let map;
 
-  function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 18.15, lng: -65.45 },
-      zoom: 12,
-      gestureHandling: "greedy",
-      fullscreenControl: false,
-      streetViewControl: false,
-      mapTypeControl: false
-    });
-  }
-
-  // ⭐ Add vendor markers safely
-  function addVendorMarkers(vendors = []) {
-    vendors.forEach(v => {
-      // Skip invalid coordinates
-      if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
-
-      new google.maps.Marker({
-        position: { lat: v.lat, lng: v.lng },
-        map,
-        title: v.title || ""
+    // Initialize the map with a default center
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 18.15, lng: -65.45 },
+        zoom: 12,
+        gestureHandling: "greedy",
+        fullscreenControl: false,
+        streetViewControl: false,
+        mapTypeControl: false
       });
-    });
-  }
+    }
 
-  // ⭐ Listen for Wix messages
-  window.addEventListener("message", (event) => {
-    const data = event.data;
-    if (!data || data.type !== "initMap") return;
-
-    // Add markers from Wix
-    addVendorMarkers(data.vendors);
-  });
-
-  window.onload = initMap;
-</script>
-      // ⭐ STATIC TEST MARKERS
-      const vendors = [
-        { lat: 18.150, lng: -65.450, title: "Vendor A" },
-        { lat: 18.155, lng: -65.445, title: "Vendor B" }
-      ];
+    // Add vendor markers from data sent by Wix
+    function addVendorMarkers(vendors = []) {
+      console.log("Vendors received in iframe:", vendors);
 
       vendors.forEach(v => {
+        // Ensure valid numeric coordinates
+        if (typeof v.lat !== "number" || typeof v.lng !== "number") {
+          return;
+        }
+
         new google.maps.Marker({
           position: { lat: v.lat, lng: v.lng },
           map,
-          title: v.title
+          title: v.title || ""
         });
       });
     }
 
+    // Listen for messages from the Wix page (iframe.postMessage)
+    window.addEventListener("message", (event) => {
+      const data = event.data;
+      if (!data || data.type !== "initMap") return;
+
+      console.log("Message received in iframe:", data);
+
+      // Add vendor markers (ignore userLocation for now)
+      addVendorMarkers(data.vendors || []);
+    });
+
+    // Make sure map is ready before any markers are added
     window.onload = initMap;
   </script>
 </body>

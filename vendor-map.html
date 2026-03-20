@@ -45,7 +45,7 @@
     }
 
     function addVendorMarkers(vendors = [], userLocation = null) {
-      vendors.forEach(v => {
+      vendors.forEach((v, index) => {
         if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
 
         const marker = new google.maps.Marker({
@@ -54,29 +54,30 @@
           title: v.title || ""
         });
 
-        // ⭐ Create a REAL DOM element for the InfoWindow
-        const container = document.createElement("div");
-        container.style.maxWidth = "220px";
-        container.style.fontFamily = "sans-serif";
+        // ⭐ Unique ID for each button
+        const btnId = `dirBtn_${index}`;
 
-        container.innerHTML = `
-          <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
-          <p style="margin:0 0 8px;font-size:13px;">${v.addressText || ""}</p>
-          <button class="dirBtn" 
-            style="padding:6px 10px;font-size:13px;cursor:pointer;">
-            Get Directions
-          </button>
+        const infoHtml = `
+          <div style="max-width:220px;font-family:sans-serif;">
+            <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
+            <p style="margin:0 0 8px;font-size:13px;">${v.addressText || ""}</p>
+            <button id="${btnId}" 
+              style="padding:6px 10px;font-size:13px;cursor:pointer;">
+              Get Directions
+            </button>
+          </div>
         `;
 
         const infoWindow = new google.maps.InfoWindow({
-          content: container
+          content: infoHtml
         });
 
         marker.addListener("click", () => {
           infoWindow.open(map, marker);
 
           google.maps.event.addListenerOnce(infoWindow, "domready", () => {
-            const btn = container.querySelector(".dirBtn");
+            // ⭐ Query the REAL rendered DOM (Google Maps clone)
+            const btn = document.getElementById(btnId);
 
             if (btn) {
               btn.onclick = () => {

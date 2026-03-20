@@ -1,54 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <style>
-    html, body, #map {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      touch-action: pan-x pan-y; /* one-finger pan */
-    }
-    .gm-style img { max-width: none; }
-  </style>
+<script>
+  let map;
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
-</head>
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: 18.15, lng: -65.45 },
+      zoom: 12,
+      gestureHandling: "greedy",
+      fullscreenControl: false,
+      streetViewControl: false,
+      mapTypeControl: false
+    });
+  }
 
-<body>
-  <div id="map"></div>
+  // ⭐ Add vendor markers safely
+  function addVendorMarkers(vendors = []) {
+    vendors.forEach(v => {
+      // Skip invalid coordinates
+      if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
 
-  <script>
-    let map;
-
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 18.15, lng: -65.45 },
-        zoom: 12,
-        gestureHandling: "greedy",
-        fullscreenControl: false,
-        streetViewControl: false,
-        mapTypeControl: false
+      new google.maps.Marker({
+        position: { lat: v.lat, lng: v.lng },
+        map,
+        title: v.title || ""
       });
+    });
+  }
 
-      // ⭐ STATIC TEST MARKERS
-      const vendors = [
-        { lat: 18.150, lng: -65.450, title: "Vendor A" },
-        { lat: 18.155, lng: -65.445, title: "Vendor B" }
-      ];
+  // ⭐ Listen for Wix messages
+  window.addEventListener("message", (event) => {
+    const data = event.data;
+    if (!data || data.type !== "initMap") return;
 
-      vendors.forEach(v => {
-        new google.maps.Marker({
-          position: { lat: v.lat, lng: v.lng },
-          map,
-          title: v.title
-        });
-      });
-    }
+    // Add markers from Wix
+    addVendorMarkers(data.vendors);
+  });
 
-    window.onload = initMap;
-  </script>
-</body>
-</html>
+  window.onload = initMap;
+</script>

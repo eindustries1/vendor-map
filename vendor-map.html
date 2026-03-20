@@ -32,6 +32,20 @@
         streetViewControl: false,
         mapTypeControl: false
       });
+
+      // ⭐ STATIC TEST MARKERS
+      const vendors = [
+        { lat: 18.150, lng: -65.450, title: "Vendor A" },
+        { lat: 18.155, lng: -65.445, title: "Vendor B" }
+      ];
+
+      vendors.forEach(v => {
+        new google.maps.Marker({
+          position: { lat: v.lat, lng: v.lng },
+          map,
+          title: v.title
+        });
+      });
     }
 
     window.onload = initMap;

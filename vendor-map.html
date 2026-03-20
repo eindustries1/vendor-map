@@ -9,12 +9,11 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      touch-action: pan-x pan-y; /* one-finger pan */
+      touch-action: pan-x pan-y;
     }
     .gm-style img { max-width: none; }
   </style>
 
-  <!-- Google Maps JS API -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsMam71vV_dCRGnMYj6JTlQBjzSmmf8EY"></script>
 </head>
 
@@ -24,7 +23,6 @@
   <script>
     let map;
 
-    // Initialize the map with a default center
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
         center: { lat: 18.15, lng: -65.45 },
@@ -36,36 +34,62 @@
       });
     }
 
-    // Add vendor markers from data sent by Wix
-    function addVendorMarkers(vendors = []) {
-      console.log("Vendors received in iframe:", vendors);
-
+    // ⭐ Add vendor markers + info windows + directions button
+    function addVendorMarkers(vendors = [], userLocation = null) {
       vendors.forEach(v => {
-        // Ensure valid numeric coordinates
-        if (typeof v.lat !== "number" || typeof v.lng !== "number") {
-          return;
-        }
+        if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
 
-        new google.maps.Marker({
+        const marker = new google.maps.Marker({
           position: { lat: v.lat, lng: v.lng },
           map,
           title: v.title || ""
         });
+
+        // Info window HTML
+        const infoHtml = `
+          <div style="max-width:220px;font-family:sans-serif;">
+            <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
+            <p style="margin:0 0 8px;font-size:13px;">${v.addressText || ""}</p>
+            <button class="dirBtn" 
+              style="padding:6px 10px;font-size:13px;cursor:pointer;">
+              Get Directions
+            </button>
+          </div>
+        `;
+
+        const infoWindow = new google.maps.InfoWindow({ content: infoHtml });
+
+        marker.addListener("click", () => {
+          infoWindow.open(map, marker);
+
+          // Attach click handler after DOM is ready
+          google.maps.event.addListenerOnce(infoWindow, "domready", () => {
+            const btn = document.querySelector(".dirBtn");
+            if (btn) {
+              btn.onclick = () => {
+                const origin = userLocation
+                  ? `${userLocation.lat},${userLocation.lng}`
+                  : "Current+Location";
+
+                const dest = `${v.lat},${v.lng}`;
+
+                const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}`;
+                window.open(url, "_blank");
+              };
+            }
+          });
+        });
       });
     }
 
-    // Listen for messages from the Wix page (iframe.postMessage)
+    // ⭐ Listen for Wix messages
     window.addEventListener("message", (event) => {
       const data = event.data;
       if (!data || data.type !== "initMap") return;
 
-      console.log("Message received in iframe:", data);
-
-      // Add vendor markers (ignore userLocation for now)
-      addVendorMarkers(data.vendors || []);
+      addVendorMarkers(data.vendors || [], data.userLocation || null);
     });
 
-    // Make sure map is ready before any markers are added
     window.onload = initMap;
   </script>
 </body>

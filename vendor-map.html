@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html&gt;a</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html, body, #map {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>touch-action: pan-x pan-y;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-family: sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-container {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max-width: 240px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-title {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin: 0 0 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-img {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>height: auto;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-desc {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-address {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #555;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-btn {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>padding: 6px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>margin-right: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #0078ff;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.info-btn-secondary {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>background: #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>color: #333;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"&gt;&lt;/script&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="map"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">class VendorMap extends HTMLElement {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>static get observedAttributes() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return ["data"];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>attributeChangedCallback(name, oldValue, newValue) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (name === "data" &amp;&amp; newValue) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const parsed = JSON.parse(newValue);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>this.initMap(parsed.vendors, parsed.userLocation);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>initMap(vendors, userLocation) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const center = vendors.length</p>
+<p class="p1"><span class="Apple-converted-space">            </span>? { lat: vendors[0].lat, lng: vendors[0].lng }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>: { lat: 18.15, lng: -65.45 };</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const map = new google.maps.Map(document.getElementById("map"), {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>center,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>zoom: 12,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gestureHandling: "greedy",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>fullscreenControl: false,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>streetViewControl: false,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>mapTypeControl: false</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// USER LOCATION (blue dot)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (userLocation) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>new google.maps.Marker({</p>
+<p class="p1"><span class="Apple-converted-space">                </span>position: userLocation,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>map,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>icon: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>path: google.maps.SymbolPath.CIRCLE,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>scale: 8,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fillColor: "#4285F4",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fillOpacity: 1,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>strokeColor: "#ffffff",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>strokeWeight: 2</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>title: "You are here"</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const bounds = new google.maps.LatLngBounds();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (userLocation) bounds.extend(userLocation);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// CUSTOM VENDOR ICON</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const vendorIcon = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>url: "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png",</p>
+<p class="p1"><span class="Apple-converted-space">            </span>scaledSize: new google.maps.Size(32, 32)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>vendors.forEach(v =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!v.lat || !v.lng) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const marker = new google.maps.Marker({</p>
+<p class="p1"><span class="Apple-converted-space">                </span>position: { lat: v.lat, lng: v.lng },</p>
+<p class="p1"><span class="Apple-converted-space">                </span>map,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>title: v.title,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>icon: vendorIcon</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>bounds.extend(marker.position);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const infoHtml = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="info-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h3 class="info-title"&gt;${v.title}&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>${v.image ? `&lt;img class="info-img" src="${v.image}" /&gt;` : ""}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="info-desc"&gt;${v.description || ""}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p class="info-address"&gt;${v.addressText || ""}&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button id="dirBtn" class="info-btn"&gt;Directions&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const infoWindow = new google.maps.InfoWindow({ content: infoHtml });</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>marker.addListener("click", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>infoWindow.open(map, marker);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>google.maps.event.addListenerOnce(infoWindow, "domready", () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const btn = document.getElementById("dirBtn");</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (btn) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>btn.onclick = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const origin = userLocation</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>? `${userLocation.lat},${userLocation.lng}`</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>: "Current+Location";</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>const dest = `${v.lat},${v.lng}`;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>window.open(</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>`https://www.google.com/maps/dir/?api=1&amp;origin=${origin}&amp;destination=${dest}`,</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>"_blank"</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>map.fitBounds(bounds);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">customElements.define("vendor-map", VendorMap);</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>

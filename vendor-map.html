@@ -34,7 +34,6 @@
       });
     }
 
-    // ⭐ Add vendor markers + info windows + directions button
     function addVendorMarkers(vendors = [], userLocation = null) {
       vendors.forEach(v => {
         if (typeof v.lat !== "number" || typeof v.lng !== "number") return;
@@ -45,7 +44,6 @@
           title: v.title || ""
         });
 
-        // Info window HTML
         const infoHtml = `
           <div style="max-width:220px;font-family:sans-serif;">
             <h3 style="margin:0 0 6px;">${v.title || ""}</h3>
@@ -62,9 +60,11 @@
         marker.addListener("click", () => {
           infoWindow.open(map, marker);
 
-          // Attach click handler after DOM is ready
           google.maps.event.addListenerOnce(infoWindow, "domready", () => {
-            const btn = document.querySelector(".dirBtn");
+            // ⭐ FIX: Query inside the infoWindow DOM
+            const container = infoWindow.getContent();
+            const btn = container.querySelector(".dirBtn");
+
             if (btn) {
               btn.onclick = () => {
                 const origin = userLocation
@@ -82,7 +82,6 @@
       });
     }
 
-    // ⭐ Listen for Wix messages
     window.addEventListener("message", (event) => {
       const data = event.data;
       if (!data || data.type !== "initMap") return;
